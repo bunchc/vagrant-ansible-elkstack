@@ -29,71 +29,41 @@
   #   - guest: 443
   #     host: 4433
   windows: false
-- name: lb-02
-  ansible_groups:
-    - elkstack
-    - loadbalancers
-  box: bunchc/ubuntu-16.04-libvirt
-  desktop: false
-  provider: libvirt
-  # disks:
-  #   - size: 10
-  #     controller: "SATA Controller"
-  #   - size: 10
-  #     controller: "SATA Controller"
-  interfaces:
-    - ip: 192.168.250.12
-      auto_config: true
-      method: static
-  #   - ip: 192.168.1.10
-  #     auto_config: false
-  #     method: static
-  #     network_name: network-1
-  mem: 512
-  provision: true
-  vcpu: 1
-  # port_forwards:
-  #   - guest: 80
-  #     host: 8080
-  #   - guest: 443
-  #     host: 4433
-  windows: false
-
-## Beginning of ELKStack nodes
-##
-## Brokers are either redis or rabbitmq
-## Currently redis works best, as a single node
-- name: broker-01
-  ansible_groups:
-    - brokers
-    - elkstack
-    - redis
-  box: bunchc/ubuntu-16.04-libvirt
-  desktop: false
-  provider: libvirt
-  # disks:
-  #   - size: 10
-  #     controller: "SATA Controller"
-  #   - size: 10
-  #     controller: "SATA Controller"
-  interfaces:
-    - ip: 192.168.250.21
-      auto_config: true
-      method: static
-  #   - ip: 192.168.1.10
-  #     auto_config: false
-  #     method: static
-  #     network_name: network-1
-  mem: 512
-  provision: true
-  vcpu: 1
-  # port_forwards:
-  #   - guest: 80
-  #     host: 8080
-  #   - guest: 443
-  #     host: 4433
-  windows: false
-#- name: broker-02
+#- name: lb-02
+#  ansible_groups:
+#    - elkstack
+#    - loadbalancers
+#  box: bunchc/ubuntu-16.04-libvirt
+#  desktop: false
+#  provider: libvirt
+#  # disks:
+#  #   - size: 10
+#  #     controller: "SATA Controller"
+#  #   - size: 10
+#  #     controller: "SATA Controller"
+#  interfaces:
+#    - ip: 192.168.250.12
+#      auto_config: true
+#      method: static
+#  #   - ip: 192.168.1.10
+#  #     auto_config: false
+#  #     method: static
+#  #     network_name: network-1
+#  mem: 512
+#  provision: true
+#  vcpu: 1
+#  # port_forwards:
+#  #   - guest: 80
+#  #     host: 8080
+#  #   - guest: 443
+#  #     host: 4433
+#  windows: false
+#
+### Beginning of ELKStack nodes
+###
+### Brokers are either redis or rabbitmq
+### Currently redis works best, as a single node
+#- name: broker-01
 #  ansible_groups:
 #    - brokers
 #    - elkstack
@@ -101,123 +71,153 @@
 #  box: bunchc/ubuntu-16.04-libvirt
 #  desktop: false
 #  provider: libvirt
-  # disks:
-  #   - size: 10
-  #     controller: "SATA Controller"
-  #   - size: 10
-  #     controller: "SATA Controller"
+#  # disks:
+#  #   - size: 10
+#  #     controller: "SATA Controller"
+#  #   - size: 10
+#  #     controller: "SATA Controller"
 #  interfaces:
-#    - ip: 192.168.250.22
+#    - ip: 192.168.250.21
 #      auto_config: true
 #      method: static
-  #   - ip: 192.168.1.10
-  #     auto_config: false
-  #     method: static
-  #     network_name: network-1
+#  #   - ip: 192.168.1.10
+#  #     auto_config: false
+#  #     method: static
+#  #     network_name: network-1
 #  mem: 512
 #  provision: true
 #  vcpu: 1
-  # port_forwards:
-  #   - guest: 80
-  #     host: 8080
-  #   - guest: 443
-  #     host: 4433
+#  # port_forwards:
+#  #   - guest: 80
+#  #     host: 8080
+#  #   - guest: 443
+#  #     host: 4433
 #  windows: false
-#- name: broker-03
+##- name: broker-02
+##  ansible_groups:
+##    - brokers
+##    - elkstack
+##    - redis
+##  box: bunchc/ubuntu-16.04-libvirt
+##  desktop: false
+##  provider: libvirt
+#  # disks:
+#  #   - size: 10
+#  #     controller: "SATA Controller"
+#  #   - size: 10
+#  #     controller: "SATA Controller"
+##  interfaces:
+##    - ip: 192.168.250.22
+##      auto_config: true
+##      method: static
+#  #   - ip: 192.168.1.10
+#  #     auto_config: false
+#  #     method: static
+#  #     network_name: network-1
+##  mem: 512
+##  provision: true
+##  vcpu: 1
+#  # port_forwards:
+#  #   - guest: 80
+#  #     host: 8080
+#  #   - guest: 443
+#  #     host: 4433
+##  windows: false
+##- name: broker-03
+##  ansible_groups:
+##    - brokers
+##    - elkstack
+##    - redis
+##  box: bunchc/ubuntu-16.04-libvirt
+##  desktop: false
+##  provider: libvirt
+#  # disks:
+#  #   - size: 10
+#  #     controller: "SATA Controller"
+#  #   - size: 10
+#  #     controller: "SATA Controller"
+##  interfaces:
+##    - ip: 192.168.250.23
+##      auto_config: true
+##      method: static
+#  #   - ip: 192.168.1.10
+#  #     auto_config: false
+#  #     method: static
+#  #     network_name: network-1
+##  mem: 512
+##  provision: true
+##  vcpu: 1
+#  # port_forwards:
+#  #   - guest: 80
+#  #     host: 8080
+#  #   - guest: 443
+#  #     host: 4433
+##  windows: false
+#
+### Logstash nodes
+### This is where the loadbalancer sends all incoming logs
+#- name: pre-processor-01
 #  ansible_groups:
-#    - brokers
 #    - elkstack
-#    - redis
+#    - pre_processors
 #  box: bunchc/ubuntu-16.04-libvirt
 #  desktop: false
 #  provider: libvirt
-  # disks:
-  #   - size: 10
-  #     controller: "SATA Controller"
-  #   - size: 10
-  #     controller: "SATA Controller"
+#  # disks:
+#  #   - size: 10
+#  #     controller: "SATA Controller"
+#  #   - size: 10
+#  #     controller: "SATA Controller"
 #  interfaces:
-#    - ip: 192.168.250.23
+#    - ip: 192.168.250.31
 #      auto_config: true
 #      method: static
-  #   - ip: 192.168.1.10
-  #     auto_config: false
-  #     method: static
-  #     network_name: network-1
-#  mem: 512
+#  #   - ip: 192.168.1.10
+#  #     auto_config: false
+#  #     method: static
+#  #     network_name: network-1
+#  mem: 1024
 #  provision: true
 #  vcpu: 1
-  # port_forwards:
-  #   - guest: 80
-  #     host: 8080
-  #   - guest: 443
-  #     host: 4433
+#  # port_forwards:
+#  #   - guest: 80
+#  #     host: 8080
+#  #   - guest: 443
+#  #     host: 4433
 #  windows: false
-
-## Logstash nodes
-## This is where the loadbalancer sends all incoming logs
-- name: pre-processor-01
-  ansible_groups:
-    - elkstack
-    - pre_processors
-  box: bunchc/ubuntu-16.04-libvirt
-  desktop: false
-  provider: libvirt
-  # disks:
-  #   - size: 10
-  #     controller: "SATA Controller"
-  #   - size: 10
-  #     controller: "SATA Controller"
-  interfaces:
-    - ip: 192.168.250.31
-      auto_config: true
-      method: static
-  #   - ip: 192.168.1.10
-  #     auto_config: false
-  #     method: static
-  #     network_name: network-1
-  mem: 1024
-  provision: true
-  vcpu: 1
-  # port_forwards:
-  #   - guest: 80
-  #     host: 8080
-  #   - guest: 443
-  #     host: 4433
-  windows: false
-
-## Processor nodes
-## Transformation magic happens here
-- name: processor-01
-  ansible_groups:
-    - elkstack
-    - processors
-  box: bunchc/ubuntu-16.04-libvirt
-  desktop: false
-  provider: libvirt
-  # disks:
-  #   - size: 10
-  #     controller: "SATA Controller"
-  #   - size: 10
-  #     controller: "SATA Controller"
-  interfaces:
-    - ip: 192.168.250.41
-      auto_config: true
-      method: static
-  #   - ip: 192.168.1.10
-  #     auto_config: false
-  #     method: static
-  #     network_name: network-1
-  mem: 1024
-  provision: true
-  vcpu: 1
-  # port_forwards:
-  #   - guest: 80
-  #     host: 8080
-  #   - guest: 443
-  #     host: 4433
-  windows: false
-
+#
+### Processor nodes
+### Transformation magic happens here
+#- name: processor-01
+#  ansible_groups:
+#    - elkstack
+#    - processors
+#  box: bunchc/ubuntu-16.04-libvirt
+#  desktop: false
+#  provider: libvirt
+#  # disks:
+#  #   - size: 10
+#  #     controller: "SATA Controller"
+#  #   - size: 10
+#  #     controller: "SATA Controller"
+#  interfaces:
+#    - ip: 192.168.250.41
+#      auto_config: true
+#      method: static
+#  #   - ip: 192.168.1.10
+#  #     auto_config: false
+#  #     method: static
+#  #     network_name: network-1
+#  mem: 1024
+#  provision: true
+#  vcpu: 1
+#  # port_forwards:
+#  #   - guest: 80
+#  #     host: 8080
+#  #   - guest: 443
+#  #     host: 4433
+#  windows: false
+#
 - name: stats-01
   ansible_groups:
     - elkstack
@@ -247,189 +247,189 @@
   #   - guest: 443
   #     host: 4433
   windows: false
-
-## Elastic search cluster
-- name: es-01
-  ansible_groups:
-    - elasticsearch
-    - elkstack
-  box: bunchc/ubuntu-16.04-libvirt
-  desktop: false
-  provider: libvirt
-  # disks:
-  #   - size: 10
-  #     controller: "SATA Controller"
-  #   - size: 10
-  #     controller: "SATA Controller"
-  interfaces:
-    - ip: 192.168.250.51
-      auto_config: true
-      method: static
-  #   - ip: 192.168.1.10
-  #     auto_config: false
-  #     method: static
-  #     network_name: network-1
-  mem: 1024
-  provision: true
-  vcpu: 1
-  # port_forwards:
-  #   - guest: 80
-  #     host: 8080
-  #   - guest: 443
-  #     host: 4433
-  windows: false
-- name: es-02
-  ansible_groups:
-    - elasticsearch
-    - elkstack
-  box: bunchc/ubuntu-16.04-libvirt
-  desktop: false
-  provider: libvirt
-  # disks:
-  #   - size: 10
-  #     controller: "SATA Controller"
-  #   - size: 10
-  #     controller: "SATA Controller"
-  interfaces:
-    - ip: 192.168.250.52
-      auto_config: true
-      method: static
-  #   - ip: 192.168.1.10
-  #     auto_config: false
-  #     method: static
-  #     network_name: network-1
-  mem: 1024
-  provision: true
-  vcpu: 1
-  # port_forwards:
-  #   - guest: 80
-  #     host: 8080
-  #   - guest: 443
-  #     host: 4433
-  windows: false
-- name: es-03
-  ansible_groups:
-    - elasticsearch
-    - elkstack
-  box: bunchc/ubuntu-16.04-libvirt
-  desktop: false
-  provider: libvirt
-  # disks:
-  #   - size: 10
-  #     controller: "SATA Controller"
-  #   - size: 10
-  #     controller: "SATA Controller"
-  interfaces:
-    - ip: 192.168.250.53
-      auto_config: true
-      method: static
-  #   - ip: 192.168.1.10
-  #     auto_config: false
-  #     method: static
-  #     network_name: network-1
-  mem: 1024
-  provision: true
-  vcpu: 1
-  # port_forwards:
-  #   - guest: 80
-  #     host: 8080
-  #   - guest: 443
-  #     host: 4433
-  windows: false
-
-## Dashboard nodes
-## Kibana and graphana run here
-- name: dashboard-01
-  ansible_groups:
-    - dashboard
-    - stats
-    - elkstack
-  box: bunchc/ubuntu-16.04-libvirt
-  desktop: false
-  provider: libvirt
-  # disks:
-  #   - size: 10
-  #     controller: "SATA Controller"
-  #   - size: 10
-  #     controller: "SATA Controller"
-  interfaces:
-    - ip: 192.168.250.61
-      auto_config: true
-      method: static
-  #   - ip: 192.168.1.10
-  #     auto_config: false
-  #     method: static
-  #     network_name: network-1
-  mem: 1024
-  provision: true
-  vcpu: 1
-  # port_forwards:
-  #   - guest: 80
-  #     host: 8080
-  #   - guest: 443
-  #     host: 4433
-  windows: false
-
-## InfluxDB Nodes
-- name: metrics-01
-  ansible_groups:
-    - elkstack
-    - influx
-  box: bunchc/ubuntu-16.04-libvirt
-  desktop: false
-  provider: libvirt
-  # disks:
-  #   - size: 10
-  #     controller: "SATA Controller"
-  #   - size: 10
-  #     controller: "SATA Controller"
-  interfaces:
-    - ip: 192.168.250.91
-      auto_config: true
-      method: static
-  #   - ip: 192.168.1.10
-  #     auto_config: false
-  #     method: static
-  #     network_name: network-1
-  mem: 1024
-  provision: true
-  vcpu: 1
-  # port_forwards:
-  #   - guest: 80
-  #     host: 8080
-  #   - guest: 443
-  #     host: 4433
-  windows: false
-
-## OpenStack Ansible All-in one node
-## Spins up an openstack AIO of a given release
-## and ties it into the monitoring stack
-- name: openstack-ansible-01
-  ansible_groups:
-    - elkstack
-    - openstack
-  box: bunchc/ubuntu-16.04-osa
-  desktop: false
-  provider: libvirt
-  # disks:
-  #   - size: 10
-  #     controller: "SATA Controller"
-  #   - size: 10
-  #     controller: "SATA Controller"
-  interfaces:
-    - ip: 192.168.250.71
-      auto_config: true
-      method: static
-  #   - ip: 192.168.1.10
-  #     auto_config: false
-  #     method: static
-  #     network_name: network-1
-  mem: 24576
-  provision: true
-  vcpu: 4
-  # port_forwards:
-  #   - guest: 80
-  #     host: 8080
-  #   - guest: 443
-  #     host: 4433
-  windows: false
+#
+### Elastic search cluster
+#- name: es-01
+#  ansible_groups:
+#    - elasticsearch
+#    - elkstack
+#  box: bunchc/ubuntu-16.04-libvirt
+#  desktop: false
+#  provider: libvirt
+#  # disks:
+#  #   - size: 10
+#  #     controller: "SATA Controller"
+#  #   - size: 10
+#  #     controller: "SATA Controller"
+#  interfaces:
+#    - ip: 192.168.250.51
+#      auto_config: true
+#      method: static
+#  #   - ip: 192.168.1.10
+#  #     auto_config: false
+#  #     method: static
+#  #     network_name: network-1
+#  mem: 1024
+#  provision: true
+#  vcpu: 1
+#  # port_forwards:
+#  #   - guest: 80
+#  #     host: 8080
+#  #   - guest: 443
+#  #     host: 4433
+#  windows: false
+#- name: es-02
+#  ansible_groups:
+#    - elasticsearch
+#    - elkstack
+#  box: bunchc/ubuntu-16.04-libvirt
+#  desktop: false
+#  provider: libvirt
+#  # disks:
+#  #   - size: 10
+#  #     controller: "SATA Controller"
+#  #   - size: 10
+#  #     controller: "SATA Controller"
+#  interfaces:
+#    - ip: 192.168.250.52
+#      auto_config: true
+#      method: static
+#  #   - ip: 192.168.1.10
+#  #     auto_config: false
+#  #     method: static
+#  #     network_name: network-1
+#  mem: 1024
+#  provision: true
+#  vcpu: 1
+#  # port_forwards:
+#  #   - guest: 80
+#  #     host: 8080
+#  #   - guest: 443
+#  #     host: 4433
+#  windows: false
+#- name: es-03
+#  ansible_groups:
+#    - elasticsearch
+#    - elkstack
+#  box: bunchc/ubuntu-16.04-libvirt
+#  desktop: false
+#  provider: libvirt
+#  # disks:
+#  #   - size: 10
+#  #     controller: "SATA Controller"
+#  #   - size: 10
+#  #     controller: "SATA Controller"
+#  interfaces:
+#    - ip: 192.168.250.53
+#      auto_config: true
+#      method: static
+#  #   - ip: 192.168.1.10
+#  #     auto_config: false
+#  #     method: static
+#  #     network_name: network-1
+#  mem: 1024
+#  provision: true
+#  vcpu: 1
+#  # port_forwards:
+#  #   - guest: 80
+#  #     host: 8080
+#  #   - guest: 443
+#  #     host: 4433
+#  windows: false
+#
+### Dashboard nodes
+### Kibana and graphana run here
+#- name: dashboard-01
+#  ansible_groups:
+#    - dashboard
+#    - stats
+#    - elkstack
+#  box: bunchc/ubuntu-16.04-libvirt
+#  desktop: false
+#  provider: libvirt
+#  # disks:
+#  #   - size: 10
+#  #     controller: "SATA Controller"
+#  #   - size: 10
+#  #     controller: "SATA Controller"
+#  interfaces:
+#    - ip: 192.168.250.61
+#      auto_config: true
+#      method: static
+#  #   - ip: 192.168.1.10
+#  #     auto_config: false
+#  #     method: static
+#  #     network_name: network-1
+#  mem: 1024
+#  provision: true
+#  vcpu: 1
+#  # port_forwards:
+#  #   - guest: 80
+#  #     host: 8080
+#  #   - guest: 443
+#  #     host: 4433
+#  windows: false
+#
+### InfluxDB Nodes
+#- name: metrics-01
+#  ansible_groups:
+#    - elkstack
+#    - influx
+#  box: bunchc/ubuntu-16.04-libvirt
+#  desktop: false
+#  provider: libvirt
+#  # disks:
+#  #   - size: 10
+#  #     controller: "SATA Controller"
+#  #   - size: 10
+#  #     controller: "SATA Controller"
+#  interfaces:
+#    - ip: 192.168.250.91
+#      auto_config: true
+#      method: static
+#  #   - ip: 192.168.1.10
+#  #     auto_config: false
+#  #     method: static
+#  #     network_name: network-1
+#  mem: 1024
+#  provision: true
+#  vcpu: 1
+#  # port_forwards:
+#  #   - guest: 80
+#  #     host: 8080
+#  #   - guest: 443
+#  #     host: 4433
+#  windows: false
+#
+### OpenStack Ansible All-in one node
+### Spins up an openstack AIO of a given release
+### and ties it into the monitoring stack
+#- name: openstack-ansible-01
+#  ansible_groups:
+#    - elkstack
+#    - openstack
+#  box: bunchc/ubuntu-16.04-osa
+#  desktop: false
+#  provider: libvirt
+#  # disks:
+#  #   - size: 10
+#  #     controller: "SATA Controller"
+#  #   - size: 10
+#  #     controller: "SATA Controller"
+#  interfaces:
+#    - ip: 192.168.250.71
+#      auto_config: true
+#      method: static
+#  #   - ip: 192.168.1.10
+#  #     auto_config: false
+#  #     method: static
+#  #     network_name: network-1
+#  mem: 24576
+#  provision: true
+#  vcpu: 4
+#  # port_forwards:
+#  #   - guest: 80
+#  #     host: 8080
+#  #   - guest: 443
+#  #     host: 4433
+#  windows: false
