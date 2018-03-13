@@ -102,6 +102,7 @@ logstash_inputs:
     host: 192.168.250.100
     threads: 2
   # - type: rabbitmq
+  #   auto_delete: true
   #   exchange: logstash
   #   host: 192.168.250.100
   #   user: logstash

@@ -1,5 +1,6 @@
 ---
 logstash_inputs:
+<<<<<<< HEAD
 #  - type: rabbitmq
 #    exchange: logstash
 #    host: "{{ vip }}"

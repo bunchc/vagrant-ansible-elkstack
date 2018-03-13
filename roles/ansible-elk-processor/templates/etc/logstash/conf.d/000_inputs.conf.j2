@@ -30,6 +30,9 @@ input {
 {%     if item.type == "rabbitmq" %}
 input {
   rabbitmq {
+{%       if item['auto_delete'] is defined %}
+    auto_delete => {{ item['auto_delete']|lower }}
+{%       endif %}
     host => "{{ item.host }}"
 {%       if item.exchange is defined %}
     exchange => "{{ item.exchange }}"
