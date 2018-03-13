@@ -1,0 +1,58 @@
+---
+# Variables for influxdb install
+
+# Defines if InflusDB is to be configured
+influxdb_config: true
+
+influxdb_admin:
+  # Determines whether the admin service is enabled.
+  enabled: true
+  # The default bind address used by the admin service.
+  bind_address: "0.0.0.0"
+  # The default bind port used by the admin service.
+  bind_port: 8083
+  # The SSL certificate used when HTTPS is enabled.
+  https_certificate: /etc/ssl/influxdb.pem
+  # Whether the admin service should use HTTPS.
+  https_enabled: false
+
+influxdb_databases:
+  - host: localhost
+    name: site
+    state: present
+ # Defines the retention policy
+    retention_policy:
+      enabled: true
+      name: test-1w
+ # Define in hour(h), days(d), weeks(w) or Infinite(INF)
+      duration: 1w
+      replication: 1
+  - host: localhost
+    name: opentsdb
+    state: present
+ # Defines the retention policy
+    retention_policy:
+      enabled: true
+      name: test-1w
+ # Define in hour(h), days(d), weeks(w) or Infinite(INF)
+      duration: 1w
+      replication: 1
+
+influxdb_opentsdb:
+  # Number of batches that may be pending in memory
+  batch_pending: '5'
+  # Flush if this many points get buffered
+  batch_size: '1000'
+  # Flush at least this often even if we haven't hit buffer limit
+  batch_timeout: '1s'
+  bind_address: "0.0.0.0"
+  bind_port: '4242'
+  certificate: '/etc/ssl/influxdb.pem'
+  consistency_level: 'one'
+  database: 'opentsdb'
+  enabled: true
+  # Log an error for every malformed point.
+  log_point_errors: true
+  retention_policy: ''
+  tls_enabled: false
+

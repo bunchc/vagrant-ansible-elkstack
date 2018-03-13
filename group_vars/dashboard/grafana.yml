@@ -1,0 +1,26 @@
+---
+# Configure grafana
+grafana_config: true
+
+# Defines if grafana will be provisioned with datasources
+grafana_confiure_datasources: true
+grafana_url: "http://{{ vip }}:{{ grafana_server_info['http_port'] }}"
+
+# Defines dashboards to add to grafana
+grafana_datasources:
+  - name: "netdata-influx"
+    type: "InfluxDB"
+    access: "proxy"
+    url: "http://{{ vip }}:8086"
+    database: "opentsdb"
+
+# Defines if dashboards will be prvisioned to grafana
+grafana_confiure_dashboards: true
+
+# Dashboards from https://grafana.com/dashboards
+grafana_custom_dashboards:
+  - id: '2701'
+    rev: '1'
+    title: 'netdata_test_dashboard'
+    datasource: 'netdata-influx'
+    database: 'opentsdb'

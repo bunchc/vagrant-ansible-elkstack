@@ -6,6 +6,7 @@
     - role: ansible-ntp
     - role: ansible-timezone
     - role: ansible-rsyslog
+    - role: ansible-netdata
 
 - hosts: brokers
   roles:
@@ -30,12 +31,59 @@
   roles:
     - role: ansible-elasticsearch
 
+- hosts: loadbalancers
+  roles:
+    - role: ansible-keepalived
+    - role: ansible-haproxy
+
 - hosts: dashboard
   roles:
     - role: ansible-grafana
     - role: ansible-kibana
 
-- hosts: loadbalancers
+- hosts: netdata
   roles:
-    - role: ansible-keepalived
-    - role: ansible-haproxy
+    - role: ansible-netdata
+
+- hosts: influx
+  roles:
+    - role: ansible-influxdb
+
+- hosts: openstack
+  become: true
+  become_method: sudo
+  tasks:
+    - name: Clone openstack-ansible
+      git:
+        repo: https://github.com/openstack/openstack-ansible
+        dest: /opt/openstack-ansible
+        version: "{{ release }}"
+    - name: Bootstrap Ansible
+      shell: scripts/bootstrap-ansible.sh
+      args:
+        chdir: /opt/openstack-ansible
+    - name: Bootstrap AIO
+      shell: scripts/bootstrap-aio.sh
+      args:
+        chdir: /opt/openstack-ansible
+#    - name: Running gate-commit-check.sh
+#      shell: scripts/gate-check-commit.sh
+#      args:
+#        chdir: /opt/openstack-ansible
+#      when: release != "pike"
+    - name: Running setup-hosts.yml
+      shell: openstack-ansible setup-hosts.yml
+      args:
+        chdir: /opt/openstack-ansible/playbooks
+#      when: release == "pike"
+    - name: Running setup-infrastructure.yml
+      shell: openstack-ansible setup-infrastructure.yml
+      args:
+        chdir: /opt/openstack-ansible/playbooks
+#      when: release == "pike"
+    - name: Running setup-openstack.yml
+      shell: openstack-ansible setup-openstack.yml
+      args:
+        chdir: /opt/openstack-ansible/playbooks
+#      when: release == "pike"
+

@@ -1,0 +1,53 @@
+---
+# Checks for and adds datasources to grafana
+# Borrowed heavily from:
+#  https://github.com/cloudalchemy/ansible-grafana/blob/master/tasks/datasources.yml
+## Tested for InfluxDB
+
+- name: Wait for grafana to start
+  command: "curl -IL {{ grafana_url }}/"
+  register: result
+  until: result.stdout.find("200 OK") != -1
+  retries: 12
+  delay: 5
+  changed_when: false
+
+- name: grafana | Getting datasources list
+  uri:
+    url: "{{ grafana_url }}/api/datasources"
+    user: "{{ grafana_security_info['admin_user'] }}"
+    password: "{{ grafana_security_info['admin_password'] }}"
+    force_basic_auth: yes
+    return_content: yes
+  register: datasources
+
+- name: grafana | Create datasources
+  uri:
+    url: " {{ grafana_url }}/api/datasources"
+    user: "{{ grafana_security_info['admin_user'] }}"
+    password: "{{ grafana_security_info['admin_password'] }}"
+    force_basic_auth: yes
+    method: POST
+    body_format: json
+    body: "{{ item | to_json }}"
+  with_items: "{{ grafana_datasources }}"
+  when: datasources.content == "[]"
+  notify: restart grafana-server
+
+- name: grafana | Ensure datasources config directory exists
+  become: true
+  file:
+    path: "{{ grafana_paths['data'] }}/provisioning/datasources/"
+    state: directory
+  register: datasources_dir
+
+- name: grafana | Cretae datasources file
+  become: true
+  copy:
+    dest: "{{ grafana_paths['data'] }}/provisioning/datasources/ansible.yml"
+    content: |
+      delete_datasources: []
+      datasources:
+      {{ grafana_datasources | to_nice_yaml }}
+    backup: no
+  when: datasources_dir is defined

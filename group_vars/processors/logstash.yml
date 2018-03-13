@@ -1,14 +1,14 @@
 ---
 logstash_inputs:
-  - type: rabbitmq
-    exchange: logstash
+#  - type: rabbitmq
+#    exchange: logstash
+#    host: "{{ vip }}"
+#    user: logstash
+#    password: logstash
+  - type: redis
+    batch_count: 1000
     host: "{{ vip }}"
-    user: logstash
-    password: logstash
-  # - type: redis
-  #   # batch_count: 1000
-  #   host: "{{ vip }}"
-  #   # threads: 2
+    threads: 2
 
 logstash_outputs:
   - output: elasticsearch
@@ -21,3 +21,38 @@ logstash_outputs:
 # Define the timezone you would like logs to parsed against
 # America/New_York, UTC, end etc.
 logstash_timezone: "{{ timezone }}"
+
+logstash_configs_remove: []
+logstash_configs:
+  - 000_inputs
+  - 001_filters
+  - 002_metrics
+  # - 100_filters_cisco_asa
+  - 200_filters_syslog
+  # - 201_filters_monit
+  # - 210_filters_iptables
+  # - 220_filters_haproxy
+  # - 230_filters_keepalived
+  - 240_filters_ssh
+  # - 241_filters_dhcp
+  # - 250_filters_snort
+  # - 260_filters_citrix_netscaler
+  # - 270_filters_apache
+  # - 280_filters_nginx
+  # - 290_filters_windows_eventlog
+  # - 300_filters_windows_updates
+  # - 310_filters_windows_iis
+  # - 320_filters_exim4
+  # - 330_filters_postfix
+  # - 340_filters_redis
+  # - 341_filters_rundeck
+  # - 350_filters_zfs
+  # - 360_filters_powerdns
+  # - 361_filters_powerdns_blacklists
+  # - 370_filters_vmware_nsx
+  - 900_filters
+  - 910_filters_source_host_ip
+  - 920_filters_alerting
+  - 990_filters_cleanup
+  - 991_filters_tagging
+  - 999_outputs

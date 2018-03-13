@@ -1,0 +1,50 @@
+---
+# Imports dashboards into Grafana
+# Borrowed heavily from:
+# https://github.com/cloudalchemy/ansible-grafana/blob/master/tasks/dashboards.yml
+#
+# Will import local dashboards from files/dashboards/*.json
+# Or a specified dashboard number from https://grafana.com/dashboards
+## Tested for InfluxDB
+
+- name: grafana | Create temporary dashboard folder
+  file:
+    path: "{{ grafana_dashboard_download_dir }}"
+    state: directory
+    mode: 0755
+  delegate_to: localhost
+
+- name: grafana | Download grafana dashboards
+  get_url:
+    url: "https://grafana.com/api/dashboards/{{ item.id }}/revisions/{{ item.rev }}/download"
+    dest: "{{ grafana_dashboard_download_dir }}/{{ item.id }}.json"
+  with_items: "{{ grafana_custom_dashboards }}"
+  delegate_to: localhost
+
+- name: grafana | Correct datasource variable names
+  replace:
+    dest: "{{ grafana_dashboard_download_dir }}/{{ item.id }}.json"
+    regexp: "[$].DS_.*}"
+    replace: "{{ item.datasource }}"
+  with_items: "{{ grafana_custom_dashboards }}"
+  delegate_to: localhost
+
+- name: Wait for grafana to start
+  command: "curl -IL {{ grafana_url }}/"
+  register: result
+  until: result.stdout.find("200 OK") != -1
+  retries: 12
+  delay: 5
+  changed_when: false
+
+- name: grafana | Import custom dashboards
+  uri:
+    url: "{{ grafana_url }}/api/dashboards/db"
+    user: "{{ grafana_security_info['admin_user'] }}"
+    password: "{{ grafana_security_info['admin_password'] }}"
+    force_basic_auth: yes
+    method: POST
+    body_format: json
+    body: '{ "dashboard": {{ lookup("file", item) }}, "overwrite": true }'
+  with_fileglob:
+    - "{{ grafana_dashboard_download_dir }}/*"

@@ -3,18 +3,46 @@
 # This is the default. If you change this to false in preference of
 # using Redis. Then you will need to adjust the pre_processors/logstash.yml
 # logstash_outputs and processors/logstash.yml logstash_inputs
-brokers_use_rabbitmq: true
+brokers_use_rabbitmq: false
 
 # Defines if brokers should use Redis
 # This is not the default. If you change this to true in preference of
 # using RabbitMQ. Then you will need to adjust the pre_processors/logstash.yml
 # logstash_outputs and processors/logstash.yml logstash_inputs
-brokers_use_redis: false
+brokers_use_redis: true
 
 pri_domain_name: test.vagrant.local
 
-pri_interface: enp0s8
+pri_interface: eth1
 
 timezone: UTC
 
 vip: 192.168.250.100
+
+# Defines info about enabling/scheduling auto updates for Netdata version
+# https://github.com/firehol/netdata/wiki/Installation#auto-update
+netdata_auto_updates:
+  enabled: false
+
+# Defines if Netdata streaming should be configured
+# https://github.com/firehol/netdata/wiki/Monitoring-ephemeral-nodes
+netdata_stream_enabled: true
+
+# Defines location of Netdata stream configuration file
+netdata_stream_config_file: '/etc/netdata/stream.conf'
+
+# Defines Netdata API Key (must be generated with command uuidgen)
+netdata_stream_api_key: '154dabe0-1d91-11e8-9f06-eb85cbb006ef'
+
+# Defines Netdata master node
+netdata_stream_master_node: 'stats-01'
+
+netdata_configure_archive: false
+
+environment:
+   HTTP_PROXY: "http://10.127.16.10:3128"
+   HTTPS_PROXY: "http://10.127.16.10:3128"
+   NO_PROXY: "localhost,127.0.0.1,10.127.*,192.168.*.*"
+   http_proxy: "http://10.127.16.10:3128"
+   https_proxy: "http://10.127.16.10:3128"
+   no_proxy: "localhost,127.0.0.1,10.127.*,192.168.*.*"

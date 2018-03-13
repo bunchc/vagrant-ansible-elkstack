@@ -64,8 +64,7 @@ Vagrant.configure(2) do |config|
   # Iterate over nodes
   nodes.each do |node_id|
     # Below is needed if not using Guest Additions
-    # config.vm.synced_folder ".", "/vagrant", type: "rsync",
-    #   rsync__exclude: "hosts"
+    config.vm.synced_folder ".", "/vagrant", type: "rsync", rsync__exclude: "hosts"
     config.vm.define node_id['name'] do |node|
       unless node_id['synced_folder'].nil?
         unless node_id['synced_folder']['type'].nil?
@@ -74,6 +73,12 @@ Vagrant.configure(2) do |config|
       end
       node.vm.box = node_id['box']
       node.vm.hostname = node_id['name']
+
+      node.vm.provider 'libvirt' do |kvm|
+        kvm.memory = node_id['mem']
+        kvm.cpus = node_id['vcpu']
+      end
+
       node.vm.provider 'virtualbox' do |vb|
         vb.memory = node_id['mem']
         vb.cpus = node_id['vcpu']
@@ -180,6 +185,7 @@ Vagrant.configure(2) do |config|
             end
             node.vm.provision 'ansible' do |ansible|
               ansible.limit = 'all'
+              ansible.verbose = 'vvvv'
               # runs Ansible playbook for installing roles/executing tasks
               ansible.playbook = 'playbook.yml'
               ansible.groups = ansible_groups

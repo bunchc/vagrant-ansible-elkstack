@@ -4,7 +4,8 @@
   vars:
     host_vars_directory: ./host_vars
     host_vars_file: "{{ host_vars_directory }}/{{ item['name'] }}.yml"
-    ssh_key_path: ".vagrant/machines/{{ item['name'] }}/virtualbox/private_key"
+    #ssh_key_path: ".vagrant/machines/{{ item['name'] }}/virtualbox/private_key"
+    ssh_key_path: ".vagrant/machines/{{ item['name'] }}/{{ item['provider'] }}/private_key"
   tasks:
     - name: Ensuring host_vars Directory Exists
       file:

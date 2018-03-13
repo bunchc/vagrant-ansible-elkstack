@@ -96,6 +96,9 @@ logstash_inputs:
     # instead of default 514)
     port: 10514
     type: syslog
+  - prot: tcp
+    type: graphite-format-metrics
+    port: 2003
   # - type: beats
   #   port: 5044
   # - type: redis

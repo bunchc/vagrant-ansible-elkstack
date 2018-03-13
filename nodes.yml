@@ -1,10 +1,12 @@
 ---
+## Load balancers for ELK and TIGK/TICK
 - name: lb-01
   ansible_groups:
     - elkstack
     - loadbalancers
-  box: mrlesmithjr/xenial64
+  box: bunchc/ubuntu-16.04-libvirt
   desktop: false
+  provider: libvirt
   # disks:
   #   - size: 10
   #     controller: "SATA Controller"
@@ -31,8 +33,9 @@
   ansible_groups:
     - elkstack
     - loadbalancers
-  box: mrlesmithjr/xenial64
+  box: bunchc/ubuntu-16.04-libvirt
   desktop: false
+  provider: libvirt
   # disks:
   #   - size: 10
   #     controller: "SATA Controller"
@@ -55,12 +58,19 @@
   #   - guest: 443
   #     host: 4433
   windows: false
+
+## Beginning of ELKStack nodes
+##
+## Brokers are either redis or rabbitmq
+## Currently redis works best, as a single node
 - name: broker-01
   ansible_groups:
     - brokers
     - elkstack
-  box: mrlesmithjr/xenial64
+    - redis
+  box: bunchc/ubuntu-16.04-libvirt
   desktop: false
+  provider: libvirt
   # disks:
   #   - size: 10
   #     controller: "SATA Controller"
@@ -83,68 +93,76 @@
   #   - guest: 443
   #     host: 4433
   windows: false
-- name: broker-02
-  ansible_groups:
-    - brokers
-    - elkstack
-  box: mrlesmithjr/xenial64
-  desktop: false
+#- name: broker-02
+#  ansible_groups:
+#    - brokers
+#    - elkstack
+#    - redis
+#  box: bunchc/ubuntu-16.04-libvirt
+#  desktop: false
+#  provider: libvirt
   # disks:
   #   - size: 10
   #     controller: "SATA Controller"
   #   - size: 10
   #     controller: "SATA Controller"
-  interfaces:
-    - ip: 192.168.250.22
-      auto_config: true
-      method: static
+#  interfaces:
+#    - ip: 192.168.250.22
+#      auto_config: true
+#      method: static
   #   - ip: 192.168.1.10
   #     auto_config: false
   #     method: static
   #     network_name: network-1
-  mem: 512
-  provision: true
-  vcpu: 1
+#  mem: 512
+#  provision: true
+#  vcpu: 1
   # port_forwards:
   #   - guest: 80
   #     host: 8080
   #   - guest: 443
   #     host: 4433
-  windows: false
-- name: broker-03
-  ansible_groups:
-    - brokers
-    - elkstack
-  box: mrlesmithjr/xenial64
-  desktop: false
+#  windows: false
+#- name: broker-03
+#  ansible_groups:
+#    - brokers
+#    - elkstack
+#    - redis
+#  box: bunchc/ubuntu-16.04-libvirt
+#  desktop: false
+#  provider: libvirt
   # disks:
   #   - size: 10
   #     controller: "SATA Controller"
   #   - size: 10
   #     controller: "SATA Controller"
-  interfaces:
-    - ip: 192.168.250.23
-      auto_config: true
-      method: static
+#  interfaces:
+#    - ip: 192.168.250.23
+#      auto_config: true
+#      method: static
   #   - ip: 192.168.1.10
   #     auto_config: false
   #     method: static
   #     network_name: network-1
-  mem: 512
-  provision: true
-  vcpu: 1
+#  mem: 512
+#  provision: true
+#  vcpu: 1
   # port_forwards:
   #   - guest: 80
   #     host: 8080
   #   - guest: 443
   #     host: 4433
-  windows: false
+#  windows: false
+
+## Logstash nodes
+## This is where the loadbalancer sends all incoming logs
 - name: pre-processor-01
   ansible_groups:
     - elkstack
     - pre_processors
-  box: mrlesmithjr/xenial64
+  box: bunchc/ubuntu-16.04-libvirt
   desktop: false
+  provider: libvirt
   # disks:
   #   - size: 10
   #     controller: "SATA Controller"
@@ -167,12 +185,16 @@
   #   - guest: 443
   #     host: 4433
   windows: false
+
+## Processor nodes
+## Transformation magic happens here
 - name: processor-01
   ansible_groups:
     - elkstack
     - processors
-  box: mrlesmithjr/xenial64
+  box: bunchc/ubuntu-16.04-libvirt
   desktop: false
+  provider: libvirt
   # disks:
   #   - size: 10
   #     controller: "SATA Controller"
@@ -195,12 +217,45 @@
   #   - guest: 443
   #     host: 4433
   windows: false
+
+- name: stats-01
+  ansible_groups:
+    - elkstack
+    - netdata
+  box: bunchc/ubuntu-16.04-libvirt
+  desktop: false
+  provider: libvirt
+  # disks:
+  #   - size: 10
+  #     controller: "SATA Controller"
+  #   - size: 10
+  #     controller: "SATA Controller"
+  interfaces:
+    - ip: 192.168.250.81
+      auto_config: true
+      method: static
+  #   - ip: 192.168.1.10
+  #     auto_config: false
+  #     method: static
+  #     network_name: network-1
+  mem: 1024
+  provision: true
+  vcpu: 1
+  # port_forwards:
+  #   - guest: 80
+  #     host: 8080
+  #   - guest: 443
+  #     host: 4433
+  windows: false
+
+## Elastic search cluster
 - name: es-01
   ansible_groups:
     - elasticsearch
     - elkstack
-  box: mrlesmithjr/xenial64
+  box: bunchc/ubuntu-16.04-libvirt
   desktop: false
+  provider: libvirt
   # disks:
   #   - size: 10
   #     controller: "SATA Controller"
@@ -227,8 +282,9 @@
   ansible_groups:
     - elasticsearch
     - elkstack
-  box: mrlesmithjr/xenial64
+  box: bunchc/ubuntu-16.04-libvirt
   desktop: false
+  provider: libvirt
   # disks:
   #   - size: 10
   #     controller: "SATA Controller"
@@ -255,8 +311,9 @@
   ansible_groups:
     - elasticsearch
     - elkstack
-  box: mrlesmithjr/xenial64
+  box: bunchc/ubuntu-16.04-libvirt
   desktop: false
+  provider: libvirt
   # disks:
   #   - size: 10
   #     controller: "SATA Controller"
@@ -279,12 +336,17 @@
   #   - guest: 443
   #     host: 4433
   windows: false
+
+## Dashboard nodes
+## Kibana and graphana run here
 - name: dashboard-01
   ansible_groups:
     - dashboard
+    - stats
     - elkstack
-  box: mrlesmithjr/xenial64
+  box: bunchc/ubuntu-16.04-libvirt
   desktop: false
+  provider: libvirt
   # disks:
   #   - size: 10
   #     controller: "SATA Controller"
@@ -301,6 +363,70 @@
   mem: 1024
   provision: true
   vcpu: 1
+  # port_forwards:
+  #   - guest: 80
+  #     host: 8080
+  #   - guest: 443
+  #     host: 4433
+  windows: false
+
+## InfluxDB Nodes
+- name: metrics-01
+  ansible_groups:
+    - elkstack
+    - influx
+  box: bunchc/ubuntu-16.04-libvirt
+  desktop: false
+  provider: libvirt
+  # disks:
+  #   - size: 10
+  #     controller: "SATA Controller"
+  #   - size: 10
+  #     controller: "SATA Controller"
+  interfaces:
+    - ip: 192.168.250.91
+      auto_config: true
+      method: static
+  #   - ip: 192.168.1.10
+  #     auto_config: false
+  #     method: static
+  #     network_name: network-1
+  mem: 1024
+  provision: true
+  vcpu: 1
+  # port_forwards:
+  #   - guest: 80
+  #     host: 8080
+  #   - guest: 443
+  #     host: 4433
+  windows: false
+
+## OpenStack Ansible All-in one node
+## Spins up an openstack AIO of a given release
+## and ties it into the monitoring stack
+- name: openstack-ansible-01
+  ansible_groups:
+    - elkstack
+    - openstack
+  box: bunchc/ubuntu-16.04-osa
+  desktop: false
+  provider: libvirt
+  # disks:
+  #   - size: 10
+  #     controller: "SATA Controller"
+  #   - size: 10
+  #     controller: "SATA Controller"
+  interfaces:
+    - ip: 192.168.250.71
+      auto_config: true
+      method: static
+  #   - ip: 192.168.1.10
+  #     auto_config: false
+  #     method: static
+  #     network_name: network-1
+  mem: 24576
+  provision: true
+  vcpu: 4
   # port_forwards:
   #   - guest: 80
   #     host: 8080

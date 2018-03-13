@@ -23,7 +23,7 @@ grafana_auth_ldap: false
 
 grafana_auth_ldap_config_file: /etc/grafana/ldap.toml
 
-grafana_config: true
+grafana_config: false
 
 # Only required if not using sqlite3 as grafana_db_type
 grafana_db_info:
@@ -177,3 +177,33 @@ grafana_users_info:
 grafana_welcome_emails: false
 
 pri_domain_name: example.org
+
+# Defines if grafana will be provisioned with datasources
+grafana_configure_datasources: false
+
+# List of datasources to configure
+grafana_datasources: []
+#  - name: "Opentsdb"
+#    type: "opentsdb"
+#    access: "proxy"
+#    url: "http://opentsdb.server.local"
+#    basicAuth: true
+#    basicAuthUser: "admin"
+#    basicAuthPassword: "password"
+#    isDefault: true
+#    jsonData: '{"tlsAuth":false,"tlsAuthWithCACert":false,"tlsSkipVerify":true}'
+
+# Defines if dashboards will be prvisioned to grafana
+grafana_confiure_dashboards: false
+
+# Defines locate to download dashboards to on remote host
+grafana_dashboard_download_dir: /tmp/dashboards
+
+# Dashboards from https://grafana.com/dashboards
+grafana_custom_dashboards: []
+#  - id: '1860'
+#    rev: '4'
+#    datasource: 'InfluxDB'
+#  - id: '358'
+#    rev: '1'
+#    datasource: 'Prometheus'

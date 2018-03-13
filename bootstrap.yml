@@ -1,5 +1,6 @@
 ---
 - hosts: all
+  strategy: free
   vars:
     alpine_packages:
       - alpine-sdk
@@ -14,6 +15,8 @@
       - python-dev
       - python-pip
       - python-setuptools
+      - git
+      - iptables
     pri_domain_name: vagrant.local
     redhat_packages:
       - gmp-devel

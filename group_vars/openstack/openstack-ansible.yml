@@ -1,0 +1,7 @@
+---
+# This defines the openstack-ansible release to use.
+# The following values are known to work:
+# stable/newton
+# stable/ocata
+# stable/pike
+release: "stable/newton"

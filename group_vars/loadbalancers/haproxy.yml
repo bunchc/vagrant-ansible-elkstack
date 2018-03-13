@@ -29,6 +29,52 @@ haproxy_configs:
       - httplog
       # - 'httpchk'
     stickiness: false
+  - name: opensdb-8086
+    backend_backups: false
+    backend_backups_primary: []
+    backend_checks: true
+    backend_name: opensdb-grafana
+    backend_servers_bind_port: 8086
+    backend_servers: "{{ groups['influx'] }}"
+    balance: roundrobin
+    default_server_options:
+      - name: maxconn
+        value: 256
+      - name: maxqueue
+        value: 128
+      - name: weight
+        value: 100
+    enabled: true
+    frontend_bind_address: "{{ haproxy_lb_vip }}"
+    frontend_bind_port: 8086
+    frontend_name: opensdb-grafana
+    frontend_ssl: false
+  - name: opentsdb-4242
+    backend_backups: false
+    backend_backups_primary: []
+    backend_checks: true
+    backend_name: opentsdb-nodes
+    backend_servers_bind_port: 4242
+    backend_servers: "{{ groups['influx'] }}"
+    balance: roundrobin
+    default_server_options:
+      - name: maxconn
+        value: 256
+      - name: maxqueue
+        value: 128
+      - name: weight
+        value: 100
+    enabled: true
+    frontend_bind_address: "{{ haproxy_lb_vip }}"
+    frontend_bind_port: 4242
+    frontend_name: opentsdb-db
+    frontend_ssl: false
+    # frontend_ssl_cert: "{{ haproxy_load_balancer_ssl['bundled_cert'] }}"
+    mode: tcp
+    options:
+      - httplog
+      # - 'httpchk'
+    stickiness: false
   - name: grafana-3000
     backend_backups: false
     backend_backups_primary: []

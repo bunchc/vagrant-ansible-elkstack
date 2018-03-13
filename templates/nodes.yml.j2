@@ -11,6 +11,7 @@
     - loadbalancers
   box: {{ vagrant_image }}
   desktop: false
+  provider: {{ vagrant_provider }}
   # disks:
   #   - size: 10
   #     controller: "SATA Controller"
@@ -44,6 +45,7 @@
     - elkstack
   box: {{ vagrant_image }}
   desktop: false
+  provider: {{ vagrant_provider }}
   # disks:
   #   - size: 10
   #     controller: "SATA Controller"
@@ -77,6 +79,7 @@
     - pre_processors
   box: {{ vagrant_image }}
   desktop: false
+  provider: {{ vagrant_provider }}
   # disks:
   #   - size: 10
   #     controller: "SATA Controller"
@@ -110,6 +113,7 @@
     - processors
   box: {{ vagrant_image }}
   desktop: false
+  provider: {{ vagrant_provider }}
   # disks:
   #   - size: 10
   #     controller: "SATA Controller"
@@ -143,6 +147,7 @@
     - elkstack
   box: {{ vagrant_image }}
   desktop: false
+  provider: {{ vagrant_provider }}
   # disks:
   #   - size: 10
   #     controller: "SATA Controller"
@@ -176,6 +181,7 @@
     - elkstack
   box: {{ vagrant_image }}
   desktop: false
+  provider: {{ vagrant_provider }}
   # disks:
   #   - size: 10
   #     controller: "SATA Controller"
@@ -192,6 +198,40 @@
   mem: {{ elk_dashboards['memory'] }}
   provision: true
   vcpu: {{ elk_dashboards['cpu'] }}
+  # port_forwards:
+  #   - guest: 80
+  #     host: 8080
+  #   - guest: 443
+  #     host: 4433
+  windows: false
+{% endfor %}
+{% for openstackansible in range(openstack_aio['count']) %}
+{%   set _starting_ip = loop.index + 70 %}
+{%   set _ip_addr = _ip_subnet|ipaddr('net')|ipaddr(_starting_ip)|ipaddr('address') %}
+{%   set _gateway = _ip_subnet|ipaddr('net')|ipaddr(_starting_ip)|ipaddr('1')|ipaddr('address') %}
+- name: openstack-ansible-0{{ loop.index }}
+  ansible_groups:
+    - elkstack
+    - openstack
+  box: {{ vagrant_image }}
+  desktop: false
+  provider: {{ vagrant_provider }}
+  # disks:
+  #   - size: 10
+  #     controller: "SATA Controller"
+  #   - size: 10
+  #     controller: "SATA Controller"
+  interfaces:
+    - ip: {{ _ip_addr }}
+      auto_config: true
+      method: static
+  #   - ip: 192.168.1.10
+  #     auto_config: false
+  #     method: static
+  #     network_name: network-1
+  mem: {{ openstack_aio['memory'] }}
+  provision: true
+  vcpu: {{ openstack_aio['cpu'] }}
   # port_forwards:
   #   - guest: 80
   #     host: 8080

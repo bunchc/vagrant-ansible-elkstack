@@ -1,10 +1,25 @@
 ---
 logstash_outputs:
-  - output: rabbitmq
-    exchange: logstash
-    exchange_type: direct
+  #- output: rabbitmq
+  #  exchange: logstash
+  #  exchange_type: direct
+  #  host: "{{ vip }}"
+  #  user: logstash
+  #  password: logstash
+  - output: redis
     host: "{{ vip }}"
-    user: logstash
-    password: logstash
-  # - output: redis
-  #   host: "{{ vip }}"
+
+logstash_custom_inputs:
+  - input: graphite
+    lines:
+      - 'port => "2003"'
+      - 'type => "graphite-format-metrics"'
+
+logstash_plugins:
+  - logstash-input-graphite
+  - logstash-filter-elasticsearch
+  - logstash-filter-json_encode
+  - logstash-filter-translate
+  - logstash-input-beats
+  - logstash-output-email
+

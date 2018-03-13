@@ -15,3 +15,5 @@
 - src: https://github.com/mrlesmithjr/ansible-redis
 - src: https://github.com/mrlesmithjr/ansible-rsyslog
 - src: https://github.com/mrlesmithjr/ansible-timezone
+- src: https://github.com/mrlesmithjr/ansible-netdata
+- src: https://github.com/mrlesmithjr/ansible-influxdb
